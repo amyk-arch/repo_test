@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2019-06-01",
+        "name": "misconfiguredstorage", // Misconfigured storage account name
+        "location": "East US",
+        "sku": {
+          "name": "Standard_LRS"
+        },
+        "kind": "StorageV2",
+        "properties": {
+          "accessTier": "Cool", // Incorrect access tier
+          "supportsHttpsTrafficOnly": false // Should be true for security
+        }
+      },
+      {
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2021-02-01",
+        "name": "misconfiguredpublicip", // Misconfigured public IP name
+        "location": "East US",
+        "properties": {
+          "publicIPAllocationMethod": "Static",
+          "dnsSettings": {
+            "domainNameLabel": ""
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2021-03-01",
+        "name": "misconfiguredvm", // Misconfigured VM name
+        "location": "East US",
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "Standard_A0" // Low-performance VM size
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "Canonical",
+              "offer": "UbuntuServer",
+              "sku": "16.04-LTS",
+              "version": "latest"
+            }
+          },
+          "osProfile": {
+            "computerName": "myVM",
+            "adminUsername": "admin123", // Weak admin username
+            "adminPassword": "P@ssw0rd123" // Weak admin password
+          }
+        }
+      }
+    ]
+  }
+  
